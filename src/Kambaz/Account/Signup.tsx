@@ -9,6 +9,7 @@ export default function Signup() {
           <Link  to="/Kambaz/Account/Profile" > Sign up </Link><br />
           <Link  to="/Kambaz/Account/Signin" >Sign in</Link>
 
+
           
         </div>
     );}
