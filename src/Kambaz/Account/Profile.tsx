@@ -43,7 +43,7 @@ export default function Profile() {
             <option>Admin</option>
         </FormSelect>
       <Link id="wd-signin-btn"
-            to="/Kambaz/Account/Profile"
+            to="/Kambaz/Account/Signin"
             className="btn btn-danger w-100 mb-2">
             Sign Out </Link>
     </div>
