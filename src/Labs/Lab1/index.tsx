@@ -274,7 +274,7 @@ Please
 to get dummy text<br/>
 <h4>GitHub</h4>
 Click 
-<a href="https://github.com/tiffanywongg/kambaz-react-web-app.git" id="wd-github"> here </a>
+<a href="https://github.com/tiffanywongg/kambaz-react-web-app" id="wd-github"> here </a>
  for github<br/>
         </div>
     );

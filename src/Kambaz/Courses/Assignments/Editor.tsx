@@ -1,117 +1,108 @@
+import { FormGroup, FormLabel, FormControl, Col, Form, Row, FormSelect, Button, Card } from "react-bootstrap";
+
 export default function AssignmentEditor() {
     return (
       <div id="wd-assignments-editor">
-        <label htmlFor="wd-name"><strong>Assignment Name</strong></label>
-        <h1></h1>
-        <input id="wd-name" value="A1 - ENV + HTML" /><br /><br />
-        <textarea id="wd-description">
-          The assignment is available online Submit a link to the landing page of your Web application running on Netlify. The landing page should include the following: Your full name and section Links to each of the lab assignments Link to the Kanbas application Links to all relevant source code repositories THe Kanbas application should include a link to navigate back to the landing page.
-        </textarea>
-        <br /><br />
-        <table>
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-points">Points</label>
-          </td>
-          <td>
-            <input id="wd-points" value={100} />
-          </td>
-        </tr>
-        <br />
-        <tr>
-            <td align="right" valign="top">
-                <label  htmlFor="wd-group"> Assignment Group</label>
-            </td>
-            <td>
-                <select id="wd-group">
-                <option value="ASSIGNMENT">Assignment</option>
-                </select>
-            </td>
-        </tr>
-        <br />
-        <tr>
-            <td align="right" valign="top">
-            <label  htmlFor="wd-display-grade-as"> Display Grade as </label>
-            </td>
-            <td>
-                <select id="wd-display-grade-as">
-                <option value="PERCENTAGE">Percentage</option>
-                </select>
-            </td>
-        </tr>
-        <br />
-        <tr>
-        <td align="right" valign="top">
-            <label  htmlFor="wd-submission-type"> Submission Type </label>
-        </td>
-        <td>
-            <select id="wd-submission-type">
-            <option value="ONLINE">Online</option>
-            </select>
-        </td>
-        </tr>
-        <br />
-        <tr>
-        <td align="right" valign="top">
-            <label  htmlFor="wd-online-entry-options"> Online Entry Options </label>
-        </td>
-        <input type="checkbox" name="check-entry-option" id="wd-text-entry"/>
-        <label htmlFor="wd-text-entry">Text Entry</label><br/>
+        <FormGroup className="mb-3" controlId="wd-name">
+          <FormLabel><strong>Assignment Name</strong></FormLabel>
+          <FormControl type="name" value="A1 - ENV + HTML" />
+        </FormGroup>
+        <FormGroup className="mb-3" controlId="wd-textarea">
+    <FormControl as="textarea" value="The assignment is available online Submit a link to the landing page of your Web application running on Netlify. The landing page should include the following: Your full name and section Links to each of the lab assignments Link to the Kanbas application Links to all relevant source code repositories THe Kanbas application should include a link to navigate back to the landing page." />
+  </FormGroup>
 
-        <input type="checkbox" name="check-entry-option" id="wd-website-url"/>
-        <label htmlFor="wd-website-url">Website URL</label><br/>
 
-        <input type="checkbox" name="check-entry-option" id="wd-media-recordings"/>
-        <label htmlFor="wd-media-recordings">Media Recordings</label><br/>
+  <FormGroup as={Row} className="mb-3" controlId="wd-points">
+    <FormLabel column sm={4} className="text-end">Points</FormLabel>
+    <Col sm={8}>
+        <FormControl type="number" defaultValue="100" />
+    </Col>
+</FormGroup>
 
-        <input type="checkbox" name="check-entry-option" id="wd-student-annotation"/>
-        <label htmlFor="wd-student-annotation">Student Annotation</label><br/>
+<FormGroup as={Row} className="mb-3" controlId="wd-group">
+    <FormLabel column sm={4} className="text-end">Assignment Group</FormLabel>
+    <Col sm={8}>
+        <FormSelect>
+            <option>ASSIGNMENTS</option>
+        </FormSelect>
+    </Col>
+</FormGroup>
 
-        <input type="checkbox" name="check-entry-option" id="wd-file-upload"/>
-        <label htmlFor="wd-file-upload">File Uploads</label><br/>
-        <br></br>
-        </tr>
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-name">Assign Assignment to</label>
-          </td>
-          <td>
-            <input id="wd-name" value="Everyone" />
-          </td>
-        </tr>
-        <br></br>
-        <tr>
-          <td align="right" valign="top">
-        <label htmlFor="wd-due-date"> Due </label>
-        </td>
-        <input type="date"
-       defaultValue="2025-01-23"
-       id="wd-due-date"/><br/>
-       </tr>
-       <br></br>
-       <tr>
-        <td align="right" valign="top">
-        <label htmlFor="wd-available-from"> Available from </label>
-        </td>
-        <input type="date"
-       defaultValue="2025-01-07"
-       id="wd-available-from"/><br/>
-       </tr>
-       <tr>
-        <td align="right" valign="top">
-        <label htmlFor="wd-available-until"> Until </label>
-        </td>
-        <input type="date"
-       defaultValue="2025-01-25"
-       id="wd-available-until"/><br/>
-       </tr>
-       <br></br>
-       <tr>
-        <td align="right" valign="top">
-        <button id="wd-cancel-button">Cancel</button>
-        <button id="wd-save-button">Save</button>
-        </td>
-        </tr>
-      </table>
+<FormGroup as={Row} className="mb-3" controlId="wd-display-grade">
+    <FormLabel column sm={4} className="text-end">Display Grade as</FormLabel>
+    <Col sm={8}>
+        <FormSelect>
+            <option>Percentage</option>
+        </FormSelect>
+    </Col>
+</FormGroup>
+
+  <Row className="mb-3 align-items-center">
+                <Col sm={4} className="text-end">
+                    <FormLabel>Submission Type</FormLabel>
+                </Col>
+                <Col sm={8}>
+                    <Card className="p-3">
+                        <FormGroup className="mb-3" controlId="wd-submission-type">
+                            <FormSelect>
+                                <option>Online</option>
+                            </FormSelect>
+                        </FormGroup>
+                        
+                        <FormGroup controlId="wd-online-entry-options">
+                            <FormLabel>Online Entry Options</FormLabel>
+                            <Form.Check label="Text Entry" />
+                            <Form.Check label="Website URL" defaultChecked />
+                            <Form.Check label="Media Recordings" />
+                            <Form.Check label="Student Annotation" />
+                            <Form.Check label="File Uploads" />
+                        </FormGroup>
+                    </Card>
+                </Col>
+            </Row>
+
+            <Row className="mb-3 align-items-center">
+                <Col sm={4} className="text-end">
+                    <FormLabel>Assign</FormLabel>
+                </Col>
+                <Col sm={8}>
+                    <Card className="p-3">
+                        <FormGroup className="mb-3" controlId="wd-assign-to">
+                            <FormLabel>Assign to</FormLabel>
+                            <FormControl type="text" defaultValue="Everyone" />
+                        </FormGroup>
+                        
+                        <FormGroup className="mb-3" controlId="wd-due-date">
+                            <FormLabel>Due</FormLabel>
+                            <FormControl type="date" defaultValue="2024-05-13" />
+                        </FormGroup>
+
+                        <Row className="mb-3 align-items-center">
+    <Col sm={6}>
+        <FormGroup controlId="wd-available-from">
+            <FormLabel>Available from</FormLabel>
+            <FormControl type="date" defaultValue="2024-05-06" />
+        </FormGroup>
+    </Col>
+
+    <Col sm={6}>
+        <FormGroup controlId="wd-available-until">
+            <FormLabel>Until</FormLabel>
+            <FormControl type="date" defaultValue="2024-05-25" />
+        </FormGroup>
+    </Col>
+</Row>
+                    </Card>
+                </Col>
+            </Row>
+            
+    <Row className="mb-3">
+                <Col className="text-end">
+                    <Button variant="secondary" className="me-2">Cancel</Button>
+                    <Button variant="danger">Save</Button>
+                </Col>
+            </Row>
+
+
     </div>
 );}
