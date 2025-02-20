@@ -8,7 +8,13 @@ import { RiArrowDownSFill } from "react-icons/ri";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { LuPlus } from "react-icons/lu";
 
+import { Link, useParams } from "react-router";
+import * as db from "../../Database";
+
 export default function Assignments() {
+  const { cid } = useParams();
+  const course = db.courses.find((course) => course._id === cid);
+  const assignments = db.assignments;
     return (
       <div id="wd-assignments" className="text-nowrap">
       <Button variant="danger" className="me-1 float-end" id="wd-add-assignment">
@@ -27,6 +33,7 @@ export default function Assignments() {
         </FormGroup>
 
 
+        {course ? (
         <ListGroup className="rounded-0" id="wd-assignments-title">
         <ListGroup.Item id="wd-assignments p-0 mb-5 fs-5 border-gray">
             <div className="wd-title p-3 ps-2 bg-secondary">
@@ -40,14 +47,21 @@ export default function Assignments() {
                 40% of Total
               </div>
             </div>
+            </ListGroup.Item>
+
+            {assignments
+              .filter((assignment: any) => assignment.course === cid)
+              .map((assignment: any) => (
           <ListGroup className="rounded-0" id="wd-assignment-list">
               <ListGroup.Item className="wd-assignment p-3 ps-1">
               <BsGripVertical className="wd-grid-col-left-sidebar fs-3" />
                 <LuNotebookPen className="wd-grid-col-left-sidebar" style={{ color: "green" }}/> 
                   <div className="wd-grid-col-main-content">
-                    <a href="#/Kambaz/Courses/1234/Assignments/123" style={{ textDecoration: "none" }}>
-                    <strong style={{ color: "black" }}> A1 - ENV + HTML </strong>
-                    </a>
+                  
+                    {/* <a href=`#/Kambaz/Courses/${course._id}/Assignments/123` style={{ textDecoration: "none" }}> */}
+                    <Link to={`/Kambaz/Courses/${course._id}/Assignments/${assignment._id}`} style={{ textDecoration: "none" }}>
+                    <strong style={{ color: "black" }}> {assignment.title} </strong>
+                    </Link>
                   <br />
                     <span style={{ color: "red" }}>
                      Multiple Modules&nbsp;
@@ -57,16 +71,17 @@ export default function Assignments() {
                     </span>
                   <br />
                   <span>
-                   <strong>Due</strong> May 13 at 11:59pm | 100 pts
+                   <strong>Due</strong> {assignment.duedate} at 11:59pm | 100 pts
                   </span>
                   </div>
                   <div className="wd-grid-col-right-sidebar">
                 <LessonControlButtons />
                 </div>
               </ListGroup.Item>
+              
 
 
-              <ListGroup.Item className="wd-assignment p-3 ps-1">
+              {/* <ListGroup.Item className="wd-assignment p-3 ps-1">
               <BsGripVertical className="wd-grid-col-left-sidebar fs-3" />
                 <LuNotebookPen className="wd-grid-col-left-sidebar" style={{ color: "green" }}/> 
                   <div className="wd-grid-col-main-content">
@@ -112,11 +127,14 @@ export default function Assignments() {
                   <div className="wd-grid-col-right-sidebar">
                 <LessonControlButtons />
                 </div>
-              </ListGroup.Item>
-          </ListGroup>
+              </ListGroup.Item> */}
+          </ListGroup>))}
 
-        </ListGroup.Item>
         </ListGroup>
+      ) : (
+          <div>Course not found</div>
+        )}
+        
       </div>
   );}
   
