@@ -8,6 +8,7 @@ import { LiaStreamSolid } from "react-icons/lia";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { MdBarChart } from "react-icons/md";
 import { FaBell } from "react-icons/fa";
+import { useSelector } from "react-redux";
 // export default function CourseStatus() {
 //     return (
 //       <div id="wd-course-status">
@@ -31,16 +32,22 @@ import { FaBell } from "react-icons/fa";
 //       </div> );}
 
 export default function CourseStatus() {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const isFaculty = currentUser.role === "FACULTY";
+  
   return (
     <div id="wd-course-status" style={{ width: "350px" }}>
       <h2>Course Status</h2>
       <div className="d-flex">
+        { isFaculty && (
+        <>
         <div className="w-50 pe-1">
           <Button variant="secondary" size="lg" className="w-100 text-nowrap ">
             <MdDoNotDisturbAlt className="me-2 fs-5" /> Unpublish </Button> </div>
         <div className="w-50">
           <Button variant="success" size="lg" className="w-100">
             <FaCheckCircle className="me-2 fs-5" /> Publish </Button> </div>
+            </>)}
       </div>
       <br />
       <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
