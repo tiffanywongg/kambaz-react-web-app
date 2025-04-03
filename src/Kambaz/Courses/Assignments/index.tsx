@@ -1,64 +1,64 @@
-import { FormControl, ListGroup } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
 import { LuNotebookPen } from "react-icons/lu";
 import { RiArrowDownSFill } from "react-icons/ri";
-import { IoEllipsisVertical, IoEllipsisVerticalSharp } from "react-icons/io5";
+import { IoEllipsisVertical } from "react-icons/io5";
 import { LuPlus } from "react-icons/lu";
 
 import { Link, useParams } from "react-router";
 import * as db from "../../Database";
-import { v4 as uuidv4 } from "uuid";
-import AssignmentsControls from "./AssignmentControls";
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
 import AssignmentControlButtons from "./AssignmentControlButtons";
-// import { addAssignment, editAssignment, updateAssignment, deleteAssignment }
-  // from "./reducer";
+import AssignmentControls from "./AssignmentControls";
+import { setAssignment, addAssignment, editAssignment, updateAssignment, deleteAssignment } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteAssignment } from "./reducer";
-import { useState } from "react";
-import GreenCheckmark from "../Modules/GreenCheckmark";
+import { useState, useEffect } from "react";
 
-export default function Assignments()
-{
-  const dispatch = useDispatch();
+export default function Assignments() {
   const { cid } = useParams();
-  const course = db.courses.find((course) => course._id === cid);
-  // const [assignments, setAssignments] = useState<any[]>(db.assignments);
-  // const [assignmentName, setAssignmentName] = useState("");
-  // const addAssignment = () => {
-  //   setAssignments([ ...assignments, { _id: uuidv4(), title: assignmentName, course: cid } ]);
-  //   setAssignmentName("");
-  // };
-
-  // const deleteAssignment = (assignmentId: string) => {
-  //   setAssignments(assignments.filter((a) => a._id !== assignmentId));
-  // };
-
-  // const editAssignment = (assignmentId: string) => {
-  //   setAssignments(assignments.map((a) => (a._id === assignmentId ? { ...a, editing: true } : a)));
-  // };
-
-  // const updateAssignment = (assignment: any) => {
-  //   setAssignments(assignments.map((a) => (a._id ===  assignment._id ? assignment : a)));
-  // };
+  const [assignmentTitle, setAssignmentTitle] = useState("");
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const isFaculty = currentUser.role === "FACULTY";
+  const dispatch = useDispatch();
+  const course = db.courses.find((course) => course._id === cid);
+  // const { currentUser } = useSelector((state: any) => state.accountReducer);
+  // const isFaculty = currentUser.role === "FACULTY";
+
+  const fetchAssignments = async () => {
+    const assignments = await coursesClient.findAssignment(cid as string);
+    dispatch(setAssignment(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  const createAssignment = async () => {
+    if (!cid) return;
+    const newAssignment = { title: assignmentTitle, course: cid };
+    const assignment = await coursesClient.createAssignment(cid, newAssignment);
+    dispatch(addAssignment(assignment));
+  };
+
+  const removeAssignment = async (assignmentId: string) => {
+    await assignmentsClient.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
 
   const [show, setShow] = useState(false);
-   const handleClose = () => setShow(false);
-   const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-    return (
-      <div id="wd-assignments" className="text-nowrap">
-        <AssignmentsControls isFaculty={isFaculty} />
-    
-        {course ? (
+  return (
+    <div id="wd-assignments" className="text-nowrap">
+      <AssignmentControls setAssignmentName={setAssignmentTitle} assignmentTitle={assignmentTitle} addAssignment={createAssignment} />
+
+      {course ? (
         <ListGroup className="rounded-0" id="wd-assignments-title">
-        <ListGroup.Item id="wd-assignments p-0 mb-5 fs-5 border-gray">
+          <ListGroup.Item id="wd-assignments p-0 mb-5 fs-5 border-gray">
             <div className="wd-title p-3 ps-2 bg-secondary">
               <BsGripVertical className="me-0.5 fs-2" />
               <RiArrowDownSFill />
-              <strong> ASSIGNMENTS</strong> 
+              <strong> ASSIGNMENTS</strong>
               <IoEllipsisVertical className="float-end fs-4" />
               <LuPlus className="float-end me-1 fs-4" />
               <div className="wd-rounded-corners-all-around 
@@ -66,36 +66,41 @@ export default function Assignments()
                 40% of Total
               </div>
             </div>
-            </ListGroup.Item>
+          </ListGroup.Item>
 
-            {assignments
-              .filter((assignment: any) => assignment.course === cid)
-              .map((assignment: any) => (
-          <ListGroup className="rounded-0" id="wd-assignment-list">
-              <ListGroup.Item className="wd-assignment p-3 ps-1">
-              <BsGripVertical className="wd-grid-col-left-sidebar fs-3" />
-                <LuNotebookPen className="wd-grid-col-left-sidebar" style={{ color: "green" }}/> 
+          {assignments
+            // .filter((assignment: any) => assignment.course === cid)
+            .map((assignment: any) => (
+              <ListGroup className="rounded-0" id="wd-assignment-list">
+                <ListGroup.Item className="wd-assignment p-3 ps-1">
+                  <BsGripVertical className="wd-grid-col-left-sidebar fs-3" />
+                  <LuNotebookPen className="wd-grid-col-left-sidebar" style={{ color: "green" }} />
                   <div className="wd-grid-col-main-content">
-                    { isFaculty ? (
+                    {/* {isFaculty ? (
+                      <Link to={`/Kambaz/Courses/${course._id}/Assignments/${assignment._id}`} style={{ textDecoration: "none" }}>
+                        <strong style={{ color: "black" }}> {assignment.title}
+
+                        </strong>
+                      </Link>
+                    ) : (<span className="text-dark me-2"><strong>{assignment.title}</strong></span>)} */}
                     <Link to={`/Kambaz/Courses/${course._id}/Assignments/${assignment._id}`} style={{ textDecoration: "none" }}>
-                    <strong style={{ color: "black" }}> {assignment.title}
-                      
-                    </strong>
-                    </Link>
-                    ) : (<span className="text-dark me-2"><strong>{assignment.title}</strong></span>)}
-                  <br />
+                        <strong style={{ color: "black" }}> {assignment.title}
+
+                        </strong>
+                      </Link>
+                    <br />
                     <span style={{ color: "red" }}>
-                     Multiple Modules&nbsp;
-                     </span>
-                     <span>
-                     | <strong>Not available until</strong> May 6 at 12:00 am |
+                      Multiple Modules&nbsp;
                     </span>
-                  <br />
-                  <span>
-                   <strong>Due</strong> {assignment.duedate} at 11:59pm | 100 pts
-                  </span>
+                    <span>
+                      | <strong>Not available until</strong> May 6 at 12:00 am |
+                    </span>
+                    <br />
+                    <span>
+                      <strong>Due</strong> {assignment.duedate} at 11:59pm | 100 pts
+                    </span>
                   </div>
-                    <div className="wd-grid-col-right-sidebar">
+                  <div className="wd-grid-col-right-sidebar">
                     {/* <AssignmentControlButtons 
                       course={course}
                       assignment={assignment}
@@ -103,17 +108,18 @@ export default function Assignments()
                       deleteAssignment={deleteAssignment}
                       editAssignment={editAssignment}
                     /> */}
-                    { isFaculty ? (
-                    <AssignmentControlButtons assignmentId={assignment._id} deleteAssignment={() => handleShow()}/>
+                    {/* {isFaculty ? (
+                      <AssignmentControlButtons assignmentId={assignment._id} deleteAssignment={() => handleShow()} />
                     ) : (
                       <><GreenCheckmark /><IoEllipsisVerticalSharp className="fs-4 mt-1" /></>
-                    )}
-                    </div>
-              </ListGroup.Item>
-              
+                    )} */}
+                    <AssignmentControlButtons assignmentId={assignment._id} deleteAssignment={(assignmentId: string) => removeAssignment(assignmentId)} assignmentName={assignment.title}/>
+                  </div>
+                </ListGroup.Item>
 
 
-              {/* <ListGroup.Item className="wd-assignment p-3 ps-1">
+
+                {/* <ListGroup.Item className="wd-assignment p-3 ps-1">
               <BsGripVertical className="wd-grid-col-left-sidebar fs-3" />
                 <LuNotebookPen className="wd-grid-col-left-sidebar" style={{ color: "green" }}/> 
                   <div className="wd-grid-col-main-content">
@@ -160,12 +166,13 @@ export default function Assignments()
                 <LessonControlButtons />
                 </div>
               </ListGroup.Item> */}
-          </ListGroup>))}
+              </ListGroup>))}
 
         </ListGroup>
       ) : (
-          <div>Course not found</div>
-        )}
-        
-      </div>
-  );}
+        <div>Course not found</div>
+      )}
+
+    </div>
+  );
+}

@@ -1,7 +1,9 @@
 import { Modal, FormControl, Button } from "react-bootstrap";
 
-export default function AssignmentEditor({ show, handleClose, dialogTitle, assignmentName, setAssignmentName, deleteAssignment,}: {
- show: boolean; handleClose: () => void; dialogTitle: string; assignmentName: string; setAssignmentName: (name: string) => void;
+export default function AssignmentEditor(
+  { show, handleClose, dialogTitle, assignmentName, setAssignmentName, deleteAssignment,
+  }: 
+  {show: boolean; handleClose: () => void; dialogTitle: string; assignmentName: string; setAssignmentName: (name: string) => void;
  deleteAssignment: () => void; }) {
  return (
   <Modal show={show} onHide={handleClose}>

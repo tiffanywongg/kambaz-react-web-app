@@ -5,8 +5,14 @@ import ModuleEditor from "./ModuleEditor";
 import { useState } from "react";
 
 export default function ModulesControls(
-{ moduleName, setModuleName, addModule, isFaculty }:
-{ moduleName: string; setModuleName: (title: string) => void; addModule: () => void; isFaculty: boolean; }) {
+{ moduleName, setModuleName, 
+  addModule, 
+  isFaculty }:
+{ moduleName: string; 
+  setModuleName: (title: string) => void; 
+  addModule: () => void; 
+  isFaculty: boolean;
+ }) {
  const [show, setShow] = useState(false);
  const handleClose = () => setShow(false);
  const handleShow = () => setShow(true);

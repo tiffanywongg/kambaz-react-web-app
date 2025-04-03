@@ -2,7 +2,7 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { FaTrash } from "react-icons/fa";
 // import { FaPencil } from "react-icons/fa6";
 import GreenCheckmark from "../Modules/GreenCheckmark";
-import { deleteAssignment } from "./reducer";
+// import { deleteAssignment } from "./reducer";
 // import { BsPlus } from "react-icons/bs";
 // import { useNavigate } from "react-router-dom";
 import AssignmentEditor from "./AssignmentEditor";
@@ -10,8 +10,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function AssignmentControlButtons(
-    { assignmentName, assignmentId }:
-    { assignmentName: string; assignmentId: string; }
+    { assignmentName, assignmentId, deleteAssignment }:
+    { assignmentName: string; assignmentId: string; deleteAssignment: (assignmentId: string) => void; }
 ) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -19,18 +19,10 @@ export default function AssignmentControlButtons(
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(deleteAssignment(assignmentId));
+    // dispatch(deleteAssignment(assignmentId)); 
+    deleteAssignment(assignmentId); 
     handleClose();
   };
-//   assignmentId: string;
-//   deleteAssignment: (assignmentId: string) => void;
-//   editAssignment: (assignmentId: string) => void;
-// }) {
-//   const navigate = useNavigate();
-
-//   const handleEditClick = () => {
-//     navigate(`/Kambaz/Courses/${course._id}/Assignments/${assignment._id}`);
-//   };
 
   return (
     <div className="float-end">
