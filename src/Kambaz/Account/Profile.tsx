@@ -1,4 +1,4 @@
-import { Button, Form, FormSelect } from "react-bootstrap";
+import { Form, FormSelect } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -69,6 +69,7 @@ export default function Profile() {
                                     onChange={(e) => setProfile({ ...profile, email: e.target.value })} />
 
                               <FormSelect
+                                    defaultValue={profile.role}
                                     onChange={(e) => setProfile({ ...profile, role: e.target.value })}
                                     id="wd-role"
                                     className="mb-2">
